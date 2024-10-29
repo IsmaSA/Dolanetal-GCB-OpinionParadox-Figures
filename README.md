@@ -15,6 +15,6 @@ Multiple stressors comprising pollution, climate change, invasive species and fr
 - **Fengzhi He** - State Key Laboratory of Black Soils Conservation and Utilization, Key Laboratory of Wetland Ecology and Environment, Northeast Institute of Geography and Agroecology, Chinese Academy of Sciences, Changchun, China
 - **Ross N. Cuthbert** - Institute for Global Food Security, School of Biological Sciences, Queen’s University Belfast, Belfast, BT9 5DL United Kingdom
 
-✝Corresponding authors: [Ismael Soto](mailto:isma-sa@hotmail.com) & [Brian Leung](mailto:brian.leung2@mcgill.ca)
+✝Corresponding authors: [Ellen Dolan](mailto:edolan05@qub.ac.uk) 
 
 

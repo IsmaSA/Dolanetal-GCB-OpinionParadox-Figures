@@ -9,7 +9,7 @@ Multiple stressors comprising pollution, climate change, invasive species and fr
 
 ## Authors and Affiliations
 
-- **Ellen Dolan** - Institute for Global Food Security, School of Biological Sciences, Queen’s University Belfast, Belfast, BT9 5DL United Kingdom
+- <a href="https://pure.qub.ac.uk/en/persons/ellen-dolan">**Ellen Dolan**</a><br> - Institute for Global Food Security, School of Biological Sciences, Queen’s University Belfast, Belfast, BT9 5DL United Kingdom
 - **Ismael Soto** - University of South Bohemia in České Budějovice, Faculty of Fisheries and Protection of Waters, South Bohemian Research Center of Aquaculture and Biodiversity of Hydrocenoses, Zátiší 728/II, 389 25 Vodňany, Czech Republic. ORCID: 0000-0002-7288-6336
 - **Jaimie T.A. Dick** - Institute for Global Food Security, School of Biological Sciences, Queen’s University Belfast, Belfast, BT9 5DL United Kingdom
 - **Fengzhi He** - State Key Laboratory of Black Soils Conservation and Utilization, Key Laboratory of Wetland Ecology and Environment, Northeast Institute of Geography and Agroecology, Chinese Academy of Sciences, Changchun, China

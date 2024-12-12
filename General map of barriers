@@ -1,0 +1,21 @@
+
+
+# just a map of all the barriers 
+
+world_map <- map_data('world')
+
+world_sf <- world_map %>% 
+  st_as_sf(coords = c('long', 'lat'), crs = 4326) %>% 
+  group_by(group) %>% 
+  summarise(geometry = st_combine(geometry)) %>% 
+  st_cast('POLYGON')
+
+df <- st_read("C:/Users/User/OneDrive - Queen's University Belfast/PhD/Chapters/Chapter 3 Global Connectivity (InvaPact)//GDW_barriers_v1_0.shp")
+
+ggplot() +
+  geom_sf(data = world_sf, fill = "wheat", color = "grey10") +                     
+  geom_sf(data = df, aes(geometry = geometry), color = "darkred", size = 0.2, alpha = 0.2) + 
+  theme_bw() +
+  theme(
+    panel.background = element_rect(fill = "aliceblue"),
+    panel.grid = element_line(color = "gray90"))

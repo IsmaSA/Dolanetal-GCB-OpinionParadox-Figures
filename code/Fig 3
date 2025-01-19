@@ -1,3 +1,619 @@
+### Still being cleaned up
+
+#### MAPS WE ACTUALLY USED -------------------------------
+#### 1940 - 1960 ---------
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+
+df_barriers_1940_1960 <- df %>%
+  filter(YEAR_DAM >= 1940 & YEAR_DAM <= 1960) 
+
+df_barriers_per_country1940_1960 <- df_barriers_1940_1960 %>%
+  group_by(COUNTRY) %>%
+  summarise(n_barriers = n())
+
+df_barriers_per_country1940_1960 <- st_transform(df_barriers_per_country1940_1960, st_crs(world))
+world<- st_make_valid(world)
+world_barriers <- st_join(world, df_barriers_per_country1940_1960)
+world_barriers$n_barriers[is.na(world_barriers$n_barriers)] <- 0
+
+world_map <- map_data('world')
+
+world_sf <- world_map %>% 
+  st_as_sf(coords = c('long', 'lat'), crs = 4326) %>% 
+  group_by(group) %>% 
+  summarise(geometry = st_combine(geometry)) %>% 
+  st_cast('POLYGON')
+
+world_barriers <- st_join(world_sf, df_barriers_per_country1940_1960)
+world_barriers$n_barriers[is.na(world_barriers$n_barriers)] <- 0
+
+world_barriers_filtered <- world_barriers %>%
+  filter(!is.na(COUNTRY))
+
+world_centroids <- st_centroid(world_barriers_filtered)
+
+world_barriers_filtered <- world_barriers %>%
+  filter(!is.na(COUNTRY))
+
+world_centroids <- st_centroid(world_barriers_filtered)
+
+world_centroids1 <- world_centroids %>%
+  group_by(COUNTRY) %>%
+  summarise(n_barriers = sum(n_barriers, na.rm = TRUE), geometry = st_union(geometry)) %>%
+  ungroup()
+
+tm_shape(world_barriers) +
+  tm_polygons(col = "n_barriers", palette = c("grey85", "wheat"), style = "fixed", 
+              breaks = c(0, 1, Inf), labels = c("No data", "Countries with barriers"), 
+              title = "", border.col = "black", lwd = 0.2) + 
+  
+  tm_shape(world_centroids1) +
+  tm_symbols(size = "n_barriers", col = "red", scale = 1.5, alpha = 0.5, 
+             title.size = "Number of Barriers") +
+  
+  tm_layout( legend.title.size = 1, 
+             legend.text.size = 0.7, 
+             title.position = c("center", "top"),
+             legend.position = c("left", "bottom")) +
+  
+  tm_layout(asp = 0)
+
+
+
+
+df_since_1940_1960 <- df %>%
+  filter(YEAR_DAM >= 1940 & YEAR_DAM <= 1960)
+
+constructions_per_country_1940_1960 <- df_since_1940_1960 %>%
+  group_by(COUNTRY) %>%
+  summarise(total_constructions = n())
+
+years_1940_1960 <- 1960 - 1940
+
+constructions_rate_per_country1940_1960 <- constructions_per_country_1940_1960 %>%
+  #mutate(annual_rate_of_constructions = total_constructions / years_1940_1960)
+  mutate(percentage_rate_of_constructions = (total_constructions / years_1940_1960) * 100)
+
+print(constructions_rate_per_country1940_1960)
+
+
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+world_data <- st_join(world, constructions_rate_per_country1940_1960)
+
+#world_data$annual_rate_of_constructions[world_data$annual_rate_of_constructions == 0] <- NA
+world_data$annual_rate_of_constructions[world_data$annual_rate_of_constructions == 0] <- NA
+
+
+#constructions_rate_per_country1800_1900 <- constructions_rate_per_country1800_1900 %>%
+#mutate(annual_rate_of_constructions = ifelse(annual_rate_of_constructions == 0, NA, annual_rate_of_constructions))
+
+#world_data$annual_rate_of_constructions[is.na(world_data$annual_rate_of_constructions)] <- 0
+
+names(world_data)
+
+ggplot() +
+  geom_sf(data = world_data, aes(fill = annual_rate_of_constructions), color = "black") +
+  fill_scale +
+  geom_sf(data = world_centroids1, aes(size = n_barriers), color = "red", scale = 1.5, alpha = 0.5) +
+  scale_size_continuous(range = c(1, 6), name = "Number of Barriers") +
+  labs(title = "Number and Rate of Barrier Constructions 1940-1960") +
+  theme_minimal() +
+  theme(
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 10),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  ) 
+
+
+###############################################
+
+#### 1960 - 1980 ---------
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+
+df_barriers_1960_1980 <- df %>%
+  filter(YEAR_DAM >= 1960 & YEAR_DAM <= 1980) 
+
+df_barriers_per_country1960_1980 <- df_barriers_1960_1980 %>%
+  group_by(COUNTRY) %>%
+  summarise(n_barriers = n())
+
+df_barriers_per_country1960_1980 <- st_transform(df_barriers_per_country1960_1980, st_crs(world))
+world<- st_make_valid(world)
+world_barriers <- st_join(world, df_barriers_per_country1960_1980)
+world_barriers$n_barriers[is.na(world_barriers$n_barriers)] <- 0
+
+world_map <- map_data('world')
+
+world_sf <- world_map %>% 
+  st_as_sf(coords = c('long', 'lat'), crs = 4326) %>% 
+  group_by(group) %>% 
+  summarise(geometry = st_combine(geometry)) %>% 
+  st_cast('POLYGON')
+
+world_barriers <- st_join(world_sf, df_barriers_per_country1960_1980)
+world_barriers$n_barriers[is.na(world_barriers$n_barriers)] <- 0
+
+world_barriers_filtered <- world_barriers %>%
+  filter(!is.na(COUNTRY))
+
+world_centroids <- st_centroid(world_barriers_filtered)
+
+world_barriers_filtered <- world_barriers %>%
+  filter(!is.na(COUNTRY))
+
+world_centroids <- st_centroid(world_barriers_filtered)
+
+world_centroids1 <- world_centroids %>%
+  group_by(COUNTRY) %>%
+  summarise(n_barriers = sum(n_barriers, na.rm = TRUE), geometry = st_union(geometry)) %>%
+  ungroup()
+
+tm_shape(world_barriers) +
+  tm_polygons(col = "n_barriers", palette = c("grey85", "wheat"), style = "fixed", 
+              breaks = c(0, 1, Inf), labels = c("No data", "Countries with barriers"), 
+              title = "", border.col = "black", lwd = 0.2) + 
+  
+  tm_shape(world_centroids1) +
+  tm_symbols(size = "n_barriers", col = "red", scale = 1.5, alpha = 0.5, 
+             title.size = "Number of Barriers") +
+  
+  tm_layout( legend.title.size = 1, 
+             legend.text.size = 0.7, 
+             title.position = c("center", "top"),
+             legend.position = c("left", "bottom")) +
+  
+  tm_layout(asp = 0)
+
+
+
+
+df_since_1960_1980 <- df %>%
+  filter(YEAR_DAM >= 1960 & YEAR_DAM <= 1980)
+
+constructions_per_country_1960_1980 <- df_since_1960_1980 %>%
+  group_by(COUNTRY) %>%
+  summarise(total_constructions = n())
+
+years_1960_1980 <- 1980 - 1960
+
+constructions_rate_per_country1960_1980 <- constructions_per_country_1960_1980 %>%
+  mutate(annual_rate_of_constructions = total_constructions / years_1960_1980)
+
+print(constructions_rate_per_country1960_1980)
+
+
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+world_data <- st_join(world, constructions_rate_per_country1960_1980)
+
+world_data$annual_rate_of_constructions[world_data$annual_rate_of_constructions == 0] <- NA
+
+#constructions_rate_per_country1800_1900 <- constructions_rate_per_country1800_1900 %>%
+#mutate(annual_rate_of_constructions = ifelse(annual_rate_of_constructions == 0, NA, annual_rate_of_constructions))
+
+#world_data$annual_rate_of_constructions[is.na(world_data$annual_rate_of_constructions)] <- 0
+
+names(world_data)
+
+ggplot() +
+  geom_sf(data = world_data, aes(fill = annual_rate_of_constructions), color = "black") +
+  fill_scale +
+  geom_sf(data = world_centroids1, aes(size = n_barriers), color = "red", scale = 1.5, alpha = 0.5) +
+  scale_size_continuous(range = c(1, 6), name = "Number of Barriers") +
+  labs(title = "Number and Rate of Barrier Constructions 1960-1980") +
+  theme_minimal() +
+  theme(
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 10),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  ) 
+
+###########################
+
+
+#### 1980 - 2000 ---------
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+
+df_barriers_1980_2000 <- df %>%
+  filter(YEAR_DAM >= 1980 & YEAR_DAM <= 2000) 
+
+df_barriers_per_country1980_2000 <- df_barriers_1980_2000 %>%
+  group_by(COUNTRY) %>%
+  summarise(n_barriers = n())
+
+df_barriers_per_country1980_2000 <- st_transform(df_barriers_per_country1980_2000, st_crs(world))
+world<- st_make_valid(world)
+world_barriers <- st_join(world, df_barriers_per_country1980_2000)
+world_barriers$n_barriers[is.na(world_barriers$n_barriers)] <- 0
+
+world_map <- map_data('world')
+
+world_sf <- world_map %>% 
+  st_as_sf(coords = c('long', 'lat'), crs = 4326) %>% 
+  group_by(group) %>% 
+  summarise(geometry = st_combine(geometry)) %>% 
+  st_cast('POLYGON')
+
+world_barriers <- st_join(world_sf, df_barriers_per_country1980_2000)
+world_barriers$n_barriers[is.na(world_barriers$n_barriers)] <- 0
+
+world_barriers_filtered <- world_barriers %>%
+  filter(!is.na(COUNTRY))
+
+world_centroids <- st_centroid(world_barriers_filtered)
+
+world_barriers_filtered <- world_barriers %>%
+  filter(!is.na(COUNTRY))
+
+world_centroids <- st_centroid(world_barriers_filtered)
+
+world_centroids1 <- world_centroids %>%
+  group_by(COUNTRY) %>%
+  summarise(n_barriers = sum(n_barriers, na.rm = TRUE), geometry = st_union(geometry)) %>%
+  ungroup()
+
+tm_shape(world_barriers) +
+  tm_polygons(col = "n_barriers", palette = c("grey85", "wheat"), style = "fixed", 
+              breaks = c(0, 1, Inf), labels = c("No data", "Countries with barriers"), 
+              title = "", border.col = "black", lwd = 0.2) + 
+  
+  tm_shape(world_centroids1) +
+  tm_symbols(size = "n_barriers", col = "red", scale = 1.5, alpha = 0.5, 
+             title.size = "Number of Barriers") +
+  
+  tm_layout( legend.title.size = 1, 
+             legend.text.size = 0.7, 
+             title.position = c("center", "top"),
+             legend.position = c("left", "bottom")) +
+  
+  tm_layout(asp = 0)
+
+
+
+
+df_since_1980_2000 <- df %>%
+  filter(YEAR_DAM >= 1980 & YEAR_DAM <= 2000)
+
+constructions_per_country_1980_2000 <- df_since_1980_2000 %>%
+  group_by(COUNTRY) %>%
+  summarise(total_constructions = n())
+
+years_1980_2000 <- 2000 - 1980
+
+constructions_rate_per_country1980_2000 <- constructions_per_country_1980_2000 %>%
+  mutate(annual_rate_of_constructions = total_constructions / years_1980_2000)
+
+print(constructions_rate_per_country1980_2000)
+
+
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+world_data <- st_join(world, constructions_rate_per_country1980_2000)
+
+world_data$annual_rate_of_constructions[world_data$annual_rate_of_constructions == 0] <- NA
+
+#constructions_rate_per_country1800_1900 <- constructions_rate_per_country1800_1900 %>%
+#mutate(annual_rate_of_constructions = ifelse(annual_rate_of_constructions == 0, NA, annual_rate_of_constructions))
+
+#world_data$annual_rate_of_constructions[is.na(world_data$annual_rate_of_constructions)] <- 0
+
+names(world_data)
+
+ggplot() +
+  geom_sf(data = world_data, aes(fill = annual_rate_of_constructions), color = "black") +
+  fill_scale +
+  geom_sf(data = world_centroids1, aes(size = n_barriers), color = "red", scale = 1.5, alpha = 0.5) +
+  scale_size_continuous(range = c(1, 6), name = "Number of Barriers") +
+  
+  labs(title = "Number and Rate of Barrier Constructions 1980-2000") +
+  theme_minimal() +
+  theme(
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 10),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  ) 
+
+#############################
+
+
+#### 2000 - 2020 ---------
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+
+df_barriers_2000_2020 <- df %>%
+  filter(YEAR_DAM >= 2000 & YEAR_DAM <= 2020) 
+
+df_barriers_per_country2000_2020 <- df_barriers_2000_2020 %>%
+  group_by(COUNTRY) %>%
+  summarise(n_barriers = n())
+
+df_barriers_per_country2000_2020 <- st_transform(df_barriers_per_country2000_2020, st_crs(world))
+world<- st_make_valid(world)
+world_barriers <- st_join(world, df_barriers_per_country2000_2020)
+world_barriers$n_barriers[is.na(world_barriers$n_barriers)] <- 0
+
+world_map <- map_data('world')
+
+world_sf <- world_map %>% 
+  st_as_sf(coords = c('long', 'lat'), crs = 4326) %>% 
+  group_by(group) %>% 
+  summarise(geometry = st_combine(geometry)) %>% 
+  st_cast('POLYGON')
+
+world_barriers <- st_join(world_sf, df_barriers_per_country2000_2020)
+world_barriers$n_barriers[is.na(world_barriers$n_barriers)] <- 0
+
+world_barriers_filtered <- world_barriers %>%
+  filter(!is.na(COUNTRY))
+
+world_centroids <- st_centroid(world_barriers_filtered)
+
+world_barriers_filtered <- world_barriers %>%
+  filter(!is.na(COUNTRY))
+
+world_centroids <- st_centroid(world_barriers_filtered)
+
+world_centroids1 <- world_centroids %>%
+  group_by(COUNTRY) %>%
+  summarise(n_barriers = sum(n_barriers, na.rm = TRUE), geometry = st_union(geometry)) %>%
+  ungroup()
+
+tm_shape(world_barriers) +
+  tm_polygons(col = "n_barriers", palette = c("grey85", "wheat"), style = "fixed", 
+              breaks = c(0, 1, Inf), labels = c("No data", "Countries with barriers"), 
+              title = "", border.col = "black", lwd = 0.2) + 
+  
+  tm_shape(world_centroids1) +
+  tm_symbols(size = "n_barriers", col = "red", scale = 1.5, alpha = 0.5, 
+             title.size = "Number of Barriers") +
+  
+  tm_layout( legend.title.size = 1, 
+             legend.text.size = 0.7, 
+             title.position = c("center", "top"),
+             legend.position = c("left", "bottom")) +
+  
+  tm_layout(asp = 0)
+
+
+
+
+df_since_2000_2020 <- df %>%
+  filter(YEAR_DAM >= 2000 & YEAR_DAM <= 2020)
+
+constructions_per_country_2000_2020 <- df_since_2000_2020 %>%
+  group_by(COUNTRY) %>%
+  summarise(total_constructions = n())
+
+years_2000_2020 <- 2020 - 2000
+
+constructions_rate_per_country2000_2020 <- constructions_per_country_2000_2020 %>%
+  mutate(annual_rate_of_constructions = total_constructions / years_2000_2020)
+
+print(constructions_rate_per_country2000_2020)
+
+
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+world_data <- st_join(world, constructions_rate_per_country2000_2020)
+
+world_data$annual_rate_of_constructions[world_data$annual_rate_of_constructions == 0] <- NA
+
+#constructions_rate_per_country1800_1900 <- constructions_rate_per_country1800_1900 %>%
+#mutate(annual_rate_of_constructions = ifelse(annual_rate_of_constructions == 0, NA, annual_rate_of_constructions))
+
+#world_data$annual_rate_of_constructions[is.na(world_data$annual_rate_of_constructions)] <- 0
+
+names(world_data)
+
+ggplot() +
+  geom_sf(data = world_data, aes(fill = annual_rate_of_constructions), color = "black") +
+  fill_scale +
+  geom_sf(data = world_centroids1, aes(size = n_barriers), color = "red", scale = 1.5, alpha = 0.5) +
+  scale_size_continuous(range = c(1, 6), name = "Number of Barriers") +
+  
+  labs(title = "Number and Rate of Barrier Constructions 2000-2020") +
+  theme_minimal() +
+  theme(
+    legend.title = element_text(size = 12),
+    legend.text = element_text(size = 10),
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10)
+  ) 
+
+
+##############################################
+
+#################################################################
+
+
+# just take the fill scale information from below 
+### Making all three maps 1980-2020 in one section and with the correct keys ------------
+library(dplyr)
+library(ggplot2)
+library(sf)
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(countrycode)
+#install.packages("tmap")
+library(tmap)
+#install.packages("quickPlot") 
+library(quickPlot)
+#library(sp) - maybe unload this
+library(readxl)
+#library(tidyr) - maybe also unload this
+#library(boot)
+
+
+df <- st_read("C:/Users/User/OneDrive - Queen's University Belfast/PhD/Chapters/Chapter 3 Global Connectivity (InvaPact)//GDW_barriers_v1_0.shp")
+df <- df %>% drop_na(YEAR_DAM)
+df <- df %>% filter(!YEAR_DAM < -98)
+df <- df %>% filter(YEAR_DAM > 0)
+table(df$YEAR_DAM)
+
+# Cumulative number of barrier constructed (don't really need this) ---- 
+df <- df[order(df$YEAR_DAM), ]
+df$Cumulative_Barriers <- ave(df$YEAR_DAM, FUN = seq_along)
+cumulative_df <- aggregate(Cumulative_Barriers ~ YEAR_DAM, data = df, FUN = length)
+cumulative_df$Cumulative_Barriers <- cumsum(cumulative_df$Cumulative_Barriers)
+
+ggplot(cumulative_df, aes(x = YEAR_DAM, y = Cumulative_Barriers)) +
+  geom_line(color = "black", size = 1) +   xlim(1800,2020)+
+  labs(x = "Year of Construction",
+       y = "Cumulative Barriers Constructed") +
+  theme_bw() +                            
+  theme(
+    plot.title = element_text(hjust = 0.5),   
+    text = element_text(size = 12)) 
+
+
+# Plot global scale
+df$CONTINENT <- countrycode(sourcevar = df$COUNTRY,
+                            origin = "country.name",
+                            destination = "continent")
+
+df$REGION <- countrycode(sourcevar = df$COUNTRY,
+                         origin = "country.name",
+                         destination = "region")
+
+df <- df %>%
+  mutate(CONTINENT = case_when(
+    REGION == "North America" ~ "North America",  
+    REGION == "Latin America & Caribbean" ~ "South America",  
+    TRUE ~ CONTINENT
+  ))
+
+df <- df %>%
+  mutate(CONTINENT = ifelse(COUNTRY == "Kosovo", "Europe", CONTINENT))
+
+
+
+df <- df %>% filter(!is.na(CONTINENT))
+
+df1  <- df %>% group_by(COUNTRY) %>% summarise(n = n())
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+world <- st_make_valid(world)
+#df1 <- st_make_valid(df1)
+
+world_data <- st_join(world, df1)
+world_data$n[is.na(world_data$n)] <- 0
+
+world_data <- world_data[,c(4,15,18,64,65,66)]
+
+
+# adding n_barriers to all data 
+df <- df %>%
+  group_by(COUNTRY) %>%
+  mutate(n_barriers = n()) %>%
+  ungroup()
+
+
+
+# year periods
+generate_map_data <- function(df, start_year, end_year) {
+  df_filtered <- df %>%
+    filter(YEAR_DAM >= start_year & YEAR_DAM <= end_year)
+  
+  barriers_per_country <- df_filtered %>%
+    group_by(COUNTRY) %>%
+    summarise(n_barriers = n(), .groups = 'drop')
+  
+  constructions_per_country <- df_filtered %>%
+    group_by(COUNTRY) %>%
+    summarise(total_constructions = n(), .groups = 'drop') %>%
+    mutate(annual_rate_of_constructions = total_constructions / (end_year - start_year))
+  
+  world <- ne_countries(scale = "medium", returnclass = "sf") %>% st_make_valid()
+  
+  barriers_sf <- st_as_sf(barriers_per_country)
+  constructions_sf <- st_as_sf(constructions_per_country)
+  
+  world_data <- world %>%
+    st_join(barriers_sf, join = st_intersects) %>%
+    st_join(constructions_sf, join = st_intersects) %>%
+    mutate(
+      n_barriers = ifelse(is.na(n_barriers), 0, n_barriers),
+      annual_rate_of_constructions = ifelse(is.na(annual_rate_of_constructions), 0, annual_rate_of_constructions)
+    )
+  
+  world_data_filtered <- world_data %>%
+    filter(!is.na(n_barriers) & n_barriers > 0)
+  
+  world_centroids <- st_centroid(world_data_filtered)
+  world_centroids_summary <- world_centroids %>%
+    group_by(name) %>%
+    summarise(n_barriers = sum(n_barriers, na.rm = TRUE), geometry = st_union(geometry)) %>%
+    ungroup()
+  
+  list(world_data = world_data, world_centroids = world_centroids_summary)
+}
+
+data_1940_2020 <- generate_map_data(df, 1940, 2020)
+data_1940_1960 <- generate_map_data(df, 1940, 1960)
+data_1960_1980 <- generate_map_data(df, 1960, 1980)
+data_1980_2000 <- generate_map_data(df, 1980, 2000)
+data_2000_2020 <- generate_map_data(df, 2000, 2020)
+
+max_rate <- max(
+  max(data_1940_1960$world_data$annual_rate_of_constructions, na.rm = TRUE),
+  max(data_1960_1980$world_data$annual_rate_of_constructions, na.rm = TRUE),
+  max(data_1980_2000$world_data$annual_rate_of_constructions, na.rm = TRUE),
+  max(data_2000_2020$world_data$annual_rate_of_constructions, na.rm = TRUE)
+)
+
+
+fill_scale <- scale_fill_gradient(low = "lightblue", high = "darkblue", na.value = "grey",
+                                  name = "Rate of Construction", limits = c(0, max_rate))
+
+plot_map <- function(world_data, world_centroids, title) {
+  ggplot() +
+    geom_sf(data = world_data, aes(fill = annual_rate_of_constructions), color = "black") +
+    fill_scale +
+    geom_sf(data = world_centroids, aes(size = n_barriers), color = "red", alpha = 0.5) +
+    scale_size_continuous(range = c(1, 6), name = "Number of Barriers") +
+    labs(title = title) +
+    theme_minimal() +
+    theme(
+      legend.title = element_text(size = 12),
+      legend.text = element_text(size = 10),
+      axis.title = element_text(size = 12),
+      axis.text = element_text(size = 10)
+    )
+}
+
+
+# 1940 - 2020
+plot_map(data_1940_2020$world_data, data_1940_2020$world_centroids, "Number and Rate of Barrier Constructions 1940-2020")
+
+# 1940
+plot_map(data_1940_1960$world_data, data_1940_1960$world_centroids, "Number and Rate of Barrier Constructions 1940-1960")
+
+#1960
+plot_map(data_1960_1980$world_data, data_1960_1980$world_centroids, "Number and Rate of Barrier Constructions 1960-1980")
+
+#1980
+plot_map(data_1980_2000$world_data, data_1980_2000$world_centroids, "Number and Rate of Barrier Constructions 1980-2000")
+
+#2000
+plot_map(data_2000_2020$world_data, data_2000_2020$world_centroids, "Number and Rate of Barrier Constructions 2000-2020")
+
+
+#################
 
 
 

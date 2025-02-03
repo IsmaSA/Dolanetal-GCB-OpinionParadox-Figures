@@ -26,10 +26,12 @@ Multiple stressors comprising pollution, climate change, invasive species and fr
 ```bash
   git clone https://github.com/ejdolan/Dolanetal-GCB-OpinionParadox-Figures
 ```
-## <a href="https://github.com/ejdolan/Dolanetal-GCB-OpinionParadox-Figures/tree/main/code">Scripts</a>
+### <a href="https://github.com/ejdolan/Dolanetal-GCB-OpinionParadox-Figures/tree/main/code">Scripts</a>
 In the following link, you can find the R codes to reproduce the figures of the paper:
 - <code>code.R</code>
 
+### Data availabilty
+The original data used in this publication can be accessed at https://doi.org/10.6084/m9.figshare.25988293.v1, which was published in accordance with Lehner, B., Beames, P., Mulligan, M. et al. 2024. The Global Dam Watch database of river barrier and reservoir information for large-scale applications. Sci Data 11, 1069. https://doi.org/10.1038/s41597-024-03752-9
 
 ### License
 [MIT](https://choosealicense.com/licenses/mit/)

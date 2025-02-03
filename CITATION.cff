@@ -1,0 +1,26 @@
+title: "Riverine barrier removals could proliferate biological invasions"
+authors:
+  - family-names: Dolan
+    given-names: Ellen
+  - family-names: Soto
+    given-names: Ismael
+  - family-names: Dick
+    given-names: Jaimie T.A.
+  - family-names: He
+    given-names: Fengzhi
+  - family-names: Cuthbert
+    given-names: Ross N.
+
+corresponding-author:
+  family-names: Dolan
+  given-names: Ellen
+  email: ellen.dolan@qub.ac.uk
+
+date-released: 2024-02-02
+version: 1.0.0
+license: CC-BY-4.0
+message: "If you use this work, please cite it as below."
+repository-code: "https://github.com/IsmaSA/Riverine-Barrier-Invasions"
+
+Dolan et al., 2025:
+Dolan,E., Soto, I., Dick, J.T., He, F., Cuthbert, R (2025). Riverine barrier removals could proliferate biological invasions. Global Change Biology.

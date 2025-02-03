@@ -26,6 +26,11 @@ Multiple stressors comprising pollution, climate change, invasive species and fr
 ```bash
   git clone https://github.com/ejdolan/Dolanetal-GCB-OpinionParadox-Figures
 ```
+## <a href="https://github.com/ejdolan/Dolanetal-GCB-OpinionParadox-Figures/code">Scripts</a>
+In the following link, you can find the R codes to reproduce the figures of the paper:
+- <code>code.R</code>
+
+
 ### License
 [MIT](https://choosealicense.com/licenses/mit/)
 
